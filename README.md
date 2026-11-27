@@ -1,104 +1,120 @@
-# Disease Detection
+# Heart Disease Classification Study
 
-## Try it without the dataset
+Study recorded disease classification through model comparison, calibration, threshold trade-offs, subgroup evaluation and data-quality sensitivity analysis.
 
-Run the [synthetic demo](DEMO.md) to explore single predictions, CSV batches and downloads.
-It uses clearly labelled invented formulas, requires no trained artifacts and makes
-no real-world prediction claims. The research results below describe the separate
-trained-model workflow.
+[Quick demo](DEMO.md) ? [Study findings](DISEASE_VALIDATION_FINDINGS.md) ? [Model card](MODEL_CARD.md) ? [Reproduce](GITHUB_PREPARATION.md) ? [CI](https://github.com/shrutikbalwan/heart-disease-prediction/actions)
 
-## Disease validation study
+![Actual synthetic-demo input form and result](docs/screenshots/demo-result.jpg)
 
-Read [findings](DISEASE_VALIDATION_FINDINGS.md), the [detailed report](DISEASE_VALIDATION_REPORT.html),
-and [calibration charts](outputs/disease_study/calibration_tradeoffs.html). The study
-compares models, calibration, thresholds, age/code subgroups and blood-pressure
-cleaning. It supports retaining the current model while documenting substantial
-age-group differences and a source-data review need. The disease suite passes 22 tests.
+*Actual app screenshot using invented formulas. Demo outputs are not trained-model predictions.*
 
+## Quick start
 
-## Advanced local application
-
-Open this folder as its own workspace. The advanced application adds model
-comparison, uncertainty/calibration, subgroup evaluation, single-record prediction,
-CSV batches and downloadable results. No GitHub publication has been performed.
+Python **3.13** is the tested version. From this repository folder on Windows:
 
 ```powershell
-python -m pip install -r requirements-dev.txt
-python -m ml_projects.app --port 8503
+py -3.13 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-runtime.txt
+.\.venv\Scripts\python.exe -m ml_projects.app --demo --port 8503
 ```
 
-Open http://127.0.0.1:8503 in your browser. On Windows, `start_app.cmd` is a
-convenient launcher after dependencies are installed. Stop the server with Ctrl+C.
-The app uses existing advanced artifacts; retrain explicitly when needed:
+Open **http://127.0.0.1:8503** and look for **SYNTHETIC DEMO**. Stop with Ctrl+C.
+On macOS/Linux, use `python3.13` and `.venv/bin/python`.
+Demo mode needs no account, API key, original workbook or trained model.
+Follow the [illustrated walkthrough](docs/WALKTHROUGH.md).
 
-```powershell
-python -m ml_projects.advanced --train
-python -m ml_projects.advanced_deliver
-python -m ml_projects.advanced_verify
-python -m ml_projects.advanced --input outputs/advanced/example_inputs.csv --output verification/advanced_predictions.csv
-```
+## Features
 
-Read `advanced_report.html`, `advanced_analysis.ipynb`, and `MODEL_CARD.md`.
-The advanced notebook's five code cells were executed as Python; native IDE Run All
-is not claimed for this new notebook. Restart the kernel when switching projects.
-Original assignment artifacts remain available below.
+- Calibrated classification with validation-selected thresholds.
+- Nested comparison of model families and blood-pressure cleaning policies.
+- Age/code subgroup analysis, uncertainty estimates and sensitivity?specificity trade-offs.
+- Single-record prediction, CSV batches and downloadable results.
+- Input validation, same-origin checks and a 5,000-row / 2 MB request limit.
+- An explicit fictional demo that never loads or modifies trained artifacts.
 
-| Metric | Historical-test value |
-|---|---|
-| accuracy | 0.7101 |
-| precision | 0.6760 |
-| recall | 0.8066 |
+| Mode | Requirements | Output |
+|---|---|---|
+| `--demo` | Runtime dependencies only | Invented formula values marked as synthetic |
+| Default trained mode | Authorized data and regenerated model artifacts | Saved model predictions and historical evidence |
+
+The demo is an interface simulator, not a model trained on synthetic data.
+Missing trained artifacts cause an explicit error; there is no silent fallback.
+
+## Historical model results
+
+| Metric | Value |
+|---|---:|
+| ROC-AUC | 0.7926 |
+| Sensitivity / recall | 80.66% |
+| Specificity | 61.38% |
 | F1 | 0.7355 |
-| ROC_AUC | 0.7926 |
-| average_precision | 0.7748 |
-| Brier | 0.1846 |
-| log_loss | 0.5504 |
-| specificity | 0.6138 |
+| Brier score | 0.1846 |
 
-The original test set was inspected during earlier development. Results here are a historical benchmark, not new independent external validation.
+The original test set was inspected during earlier development. These are
+**historical benchmark results**, not fresh external validation. They describe
+the separate trained pipeline, not the fictional demo.
 
+Educational research only: no clinical, temporal or external validation. Outputs describe recorded labels, not future disease risk. Subgroup sensitivity varies substantially; source height units remain unresolved and BMI is omitted. The synthetic demo uses fictional signals with no clinical meaning.
 
+See [the study findings](DISEASE_VALIDATION_FINDINGS.md) and [MODEL_CARD.md](MODEL_CARD.md)
+for methodology, intended use and limitations.
 
-This is an independent project. Open this folder in Antigravity or VS Code.
-It includes its own dataset, Python package, trained model, notebook, report,
-figures, dependency files and tests. You can copy this entire folder elsewhere.
+## Screenshots
 
-## GitHub clone and CI
+| Single record | CSV batch workflow |
+|---|---|
+| ![Labelled fictional result](docs/screenshots/demo-result.jpg) | ![Synthetic batch interface](docs/screenshots/demo-batch.jpg) |
 
-See [GitHub preparation and reproduction](GITHUB_PREPARATION.md) before using a
-fresh clone. Generated artifacts and datasets are kept locally and excluded from
-Git. The report links and app require regeneration after cloning. CI uses
-synthetic inputs; full model verification requires the authorized dataset.
+All screenshots use fictional demo data. [Walkthrough and presentation script](docs/WALKTHROUGH.md).
 
-## Setup
+## Architecture
 
-Python 3.13 was used. Run commands from this folder:
-
-```powershell
-python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements-dev.txt
+```text
+Browser: index.html + app.js + demo.js
+                  |
+         loopback HTTP JSON / CSV
+                  |
+        ml_projects/app.py
+           /             \
+  explicit --demo     default trained mode
+      demo.py           advanced.py
+  invented formulas   saved sklearn pipeline
 ```
 
-Use `.venv\Scripts\python` instead of `python` below if using that environment.
-Select its Python kernel, restart the notebook kernel, then Run All in
-`analysis.ipynb`. Restarting is necessary if you previously used the combined
-workspace kernel. `RETRAIN=False` checks existing trained results; set it to
-`True` to retrain. Open `report.html` to read the report.
+Training and evaluation studies are separate CLI workflows. The browser cannot
+trigger training. Submitted inputs are processed locally and not saved by the
+server. This educational app is not a production multi-user service.
 
-## Train, rebuild, predict and verify
+## Reproduce the trained project
+
+Follow [GITHUB_PREPARATION.md](GITHUB_PREPARATION.md) for dependency installation,
+authorized workbook placement and the full training order. The study entry point
+is `python -m ml_projects.disease_study`, after generating the baseline and advanced
+artifacts as documented there.
+
+Original data, model binaries, row-level outputs, executed notebooks and generated
+HTML reports are excluded from Git. A fresh clone provides the source to
+regenerate them. Interactive notebooks additionally need
+`requirements-notebook.txt`; regenerate notebooks before opening them.
+
+## Tests
 
 ```powershell
-python -m ml_projects.train --project disease
-python -m ml_projects.deliver --project disease
-python -m ml_projects.predict --input outputs/example_inputs.csv --output outputs/predictions_demo.csv
-python -m ml_projects.verify
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+.\.venv\Scripts\python.exe -m pytest tests/test_public_smoke.py tests/test_demo.py -q
 ```
 
-Verification runs the local tests, recomputes held-out model metrics, executes
-notebook Python cells and checks batch predictions against saved results.
-It does not retrain or claim an interactive IDE run of this relocated copy.
+The **12 dataset-free tests** run in GitHub Actions on Windows and Ubuntu with
+Python 3.13. [The demo implementation CI run passed](https://github.com/shrutikbalwan/heart-disease-prediction/actions/runs/45939428166);
+check the latest Actions run for subsequent commits.
 
-The dataset is `datasets/project 3.xlsx`. Its source hash and tested package
-versions are in `outputs/run.json`. Training uses a held-out test partition,
-five-fold training-only cross-validation, and seed 42. Reports document model
-limitations. Prediction examples are demonstrations, not independent validation.
+The full local suite passed **34 tests** with authorized data and generated
+artifacts.
+After reproduction, run `python -m pytest -q` for the full suite. CI smoke checks
+do not validate real-world model accuracy.
+
+## Data and licensing
+
+See [DATASET.md](DATASET.md) for provenance and the unconfirmed redistribution
+permission. Original workbooks are not uploaded. No code license has been selected;
+this repository does not currently grant an explicit open-source license.
