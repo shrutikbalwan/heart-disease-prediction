@@ -2,11 +2,19 @@
 
 Study recorded disease classification through model comparison, calibration, threshold trade-offs, subgroup evaluation and data-quality sensitivity analysis.
 
-[Quick demo](DEMO.md) ? [Study findings](DISEASE_VALIDATION_FINDINGS.md) ? [Model card](MODEL_CARD.md) ? [Reproduce](GITHUB_PREPARATION.md) ? [CI](https://github.com/shrutikbalwan/heart-disease-prediction/actions)
+[Quick demo](DEMO.md) | [Study findings](DISEASE_VALIDATION_FINDINGS.md) | [Model card](MODEL_CARD.md) | [Reproduce](GITHUB_PREPARATION.md) | [CI](https://github.com/shrutikbalwan/heart-disease-prediction/actions)
 
 ![Actual synthetic-demo input form and result](docs/screenshots/demo-result.jpg)
 
 *Actual app screenshot using invented formulas. Demo outputs are not trained-model predictions.*
+
+## Video walkthrough
+
+[Watch or download the 60-second MP4](docs/videos/synthetic-demo.mp4) | [Transcript](docs/videos/TRANSCRIPT.md) | [Subtitles](docs/videos/synthetic-demo.srt)
+
+A silent, captioned walkthrough assembled from actual synthetic-demo screenshots.
+It shows the input form, fictional example result and batch controls. It is not
+a live interaction recording or evidence of trained-model performance.
 
 ## Quick start
 
