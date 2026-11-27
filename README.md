@@ -1,5 +1,12 @@
 # Disease Detection
 
+## Try it without the dataset
+
+Run the [synthetic demo](DEMO.md) to explore single predictions, CSV batches and downloads.
+It uses clearly labelled invented formulas, requires no trained artifacts and makes
+no real-world prediction claims. The research results below describe the separate
+trained-model workflow.
+
 ## Disease validation study
 
 Read [findings](DISEASE_VALIDATION_FINDINGS.md), the [detailed report](DISEASE_VALIDATION_REPORT.html),
